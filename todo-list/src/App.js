@@ -16,8 +16,7 @@ function App() {
       const lastTask = sectionRef.current.lastChild;
       gsap.from(lastTask, { opacity: 0, x: "-100%", ease: "back" });
       inputRef.current.value = "";
-    }else{
-
+    } else {
     }
   };
   const handleDoneItem = (index) => {
@@ -26,9 +25,16 @@ function App() {
     setTodos(newTodosList);
   };
   const handleDeleteTask = (index) => {
-    const newTodosList = [...todos];
-    newTodosList.splice(index, 1);
-    setTodos(newTodosList);
+    gsap.to(`[data-id="${index}"]`, {
+      scale: 0,
+      ease: "power4",
+      duration: 0.5,
+      onComplete: () => {
+        const newTodosList = [...todos];
+        newTodosList.splice(index, 1);
+        setTodos(newTodosList);
+      },
+    });
   };
   return (
     <div className="App">
@@ -41,7 +47,7 @@ function App() {
       <section ref={sectionRef}>
         {todos.map(({ task, competed }, index) => {
           return (
-            <div className="list" key={index}>
+            <div className="list" key={index} data-id={index}>
               <div className={competed ? "TaskDone" : ""}>
                 <ion-icon
                   name="checkmark-outline"
