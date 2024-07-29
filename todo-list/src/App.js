@@ -17,22 +17,11 @@ function App() {
     newTodosList[index].competed = !newTodosList[index].competed;
     setTodos(newTodosList);
   };
-  todos.map(({competed, task},index) => {
-    if (competed) {
-      return (
-        <div className="list" key={index}>
-          <div style={{textDecoration:"underline"}}>
-            <ion-icon
-              name="checkmark-outline"
-              onClick={() => handleDoneItem(index)}
-            ></ion-icon>
-            {task}
-          </div>
-          <ion-icon name="trash-outline"></ion-icon>
-        </div>
-      );
-    }
-  });
+  const handleDeleteTask = (index)=>{
+    const newTodosList = [...todos];
+    newTodosList.splice(index,1);
+    setTodos(newTodosList);
+  }
   console.log(todos);
   return (
     <div className="App">
@@ -46,14 +35,14 @@ function App() {
         {todos.map(({ task, competed }, index) => {
           return (
             <div className="list" key={index}>
-              <div>
+              <div className={competed ? "TaskDone" : ''}>
                 <ion-icon
                   name="checkmark-outline"
                   onClick={() => handleDoneItem(index)}
                 ></ion-icon>
                 {task}
               </div>
-              <ion-icon name="trash-outline"></ion-icon>
+              <ion-icon name="trash-outline" onClick={()=>{handleDeleteTask(index)}}></ion-icon>
             </div>
           );
         })}

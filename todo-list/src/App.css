@@ -92,3 +92,9 @@ ion-icon[name="checkmark-outline"]{
 ion-icon[name="trash-outline"]{
   color: #E25858;
 }
+.TaskDone {
+  text-decoration: line-through;
+}
+.TaskDone ion-icon[name="checkmark-outline"]{
+  background-color: green;
+}
