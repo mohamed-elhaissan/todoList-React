@@ -17,6 +17,7 @@ function App() {
       gsap.from(lastTask, { opacity: 0, x: "-100%", ease: "back" });
       inputRef.current.value = "";
     } else {
+      console.log('error')
     }
   };
   const handleDoneItem = (index) => {
