@@ -1,6 +1,7 @@
 import "./App.css";
 import {  useRef, useState } from "react";
 import gsap from "gsap";
+import { toast, ToastContainer } from "react-toastify";
 function App() {
   const [todos, setTodos] = useState([]);
   const inputRef = useRef();
@@ -14,14 +15,16 @@ function App() {
         task: inputValue,
       };
       setTodos([...todos, newItem]);
+      toast.success('good')
       gsap.fromTo(lastItem.current,{
-        opacity : 0,ease:'back',x : '100px'
+        opacity : 0,ease:'back',x : '-100px'
       },{
         opacity : 1,ease:'back',x : '0px'
       })
       inputRef.current.value = "";
     } else {
       console.log("error");
+      toast.error('something wrong here')
     }
   };
   const handleDoneItem = (index) => {
@@ -45,8 +48,8 @@ function App() {
   return (
     <div className="App">
       <header>
-        <input type="text" placeholder="Add a new task..." ref={inputRef} onKeyDown={(e)=>{
-          if(e.key === 'enter'){
+        <input type="text" placeholder="Add a new task..." ref={inputRef} onKeyDown={(event)=>{
+          if(event.key === 'enter'){
             handleItemAddTask()
           }
         }}/>
@@ -80,6 +83,7 @@ function App() {
           );
         })}
       </section>
+      <ToastContainer/>
     </div>
   );
 }
