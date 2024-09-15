@@ -1,9 +1,10 @@
 import "./App.css";
-import { useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import gsap from "gsap";
 function App() {
   const [todos, setTodos] = useState([]);
   const inputRef = useRef();
+  const lastItem = useRef();
   const sectionRef = useRef(null);
   const handleItemAddTask = () => {
     const inputValue = inputRef.current.value;
@@ -13,11 +14,14 @@ function App() {
         task: inputValue,
       };
       setTodos([...todos, newItem]);
-      const lastTask = sectionRef.current.lastChild;
-      gsap.from(lastTask, { opacity: 0, x: "-100%", ease: "back" });
+      gsap.fromTo(lastItem.current,{
+        opacity : 0,ease:'back',x : '100px'
+      },{
+        opacity : 1,ease:'back',x : '0px'
+      })
       inputRef.current.value = "";
     } else {
-      console.log('error')
+      console.log("error");
     }
   };
   const handleDoneItem = (index) => {
@@ -37,10 +41,15 @@ function App() {
       },
     });
   };
+ 
   return (
     <div className="App">
       <header>
-        <input type="text" placeholder="Add a new task..." ref={inputRef} />
+        <input type="text" placeholder="Add a new task..." ref={inputRef} onKeyDown={(e)=>{
+          if(e.key === 'enter'){
+            handleItemAddTask()
+          }
+        }}/>
         <button onClick={handleItemAddTask}>
           Create<ion-icon name="add-circle-outline"></ion-icon>
         </button>
@@ -48,7 +57,12 @@ function App() {
       <section ref={sectionRef}>
         {todos.map(({ task, competed }, index) => {
           return (
-            <div className="list" key={index} data-id={index}>
+            <div
+              className="list"
+              key={index}
+              data-id={index}
+              ref={index === todos.length - 1 ? lastItem : null}
+            >
               <div className={competed ? "TaskDone" : ""}>
                 <ion-icon
                   name="checkmark-outline"
