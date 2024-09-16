@@ -1,10 +1,11 @@
-
+import TodoAdvanced from "./componants/todos";
+import Catego from "./componants/Catego";
 function App() {
  
   return (
-    <div>
-      
-      
+    <div className="flex gap-3">
+      <Catego/>
+      <TodoAdvanced/>      
     </div>
   )
 }
