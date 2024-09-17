@@ -7,7 +7,8 @@ export default function Catego() {
   return (
     <div className="w-[20%] bg-white p-4 flex flex-col justify-between h-[100vh] ">
       <div className="flex flex-col justify-start items-start gap-2 ">
-        <h1 className="font-bold text-3xl tracking-tight mb-10">Todo List</h1>
+        <h1 
+        className="font-bold text-3xl tracking-tight mb-10">Todo List</h1>
         <button className="border border-[rgba(0,0,0,.4)] flex pl-2 p-2 rounded-md hover:bg-black hover:text-white  w-full ">All</button>
         <button className="border border-[rgba(0,0,0,.4)] flex pl-2 p-2 rounded-md hover:bg-black hover:text-white  w-full ">Active</button>
         <button className="border border-[rgba(0,0,0,.4)] flex pl-2 p-2 rounded-md hover:bg-black hover:text-white  w-full ">Completed</button>
