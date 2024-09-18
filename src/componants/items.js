@@ -3,7 +3,7 @@ export default function Item() {
   return (
     <div className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-1/2">
       <div className="flex items-center justify-center gap-2">
-        <input type="checkbox" />
+        <input type="checkbox" className="w-[100%] h-[100%]" />
         <p>Coding</p>
       </div>
       <div className="flex items-center justify-center gap-2">

@@ -18,9 +18,9 @@ export default function CardContent() {
       <input
         type="text"
         placeholder="Add a new Task"
-        className="border font-[500] rounded-lg w-[50%] px-5 focus:outline-[#E5E7EB] focus:outline-8"
+        className="border font-[500] rounded-lg w-[50%] px-5  focus:outline-[#6366F1]"
       />
-      <select ref={dateInput} className="border rounded-lg cursor-pointer px-5">
+      <select ref={dateInput}  className="border focus:outline-4 focus:outline-[#6366F1] rounded-lg cursor-pointer px-5">
         <option value="Work">Work</option>
         <option value="Personal">Personal</option>
         <option value="Shopping">Shopping</option>
@@ -29,10 +29,10 @@ export default function CardContent() {
       <div>
         <input  value={currentDate} onChange={handleChange}
           type="date"
-          className="border cursor-pointer rounded-md px-4 py-2 bg-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          className="border cursor-pointer rounded-md px-4 py-2 bg-white shadow-sm focus:outline-4 focus:outline-[#6366F1]"
         />
       </div>
-      <button className="flex bg-black justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2">
+      <button className="flex bg-black  focus:ring-blue-900 justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2">
         <GoPlus />
         Add
       </button>
