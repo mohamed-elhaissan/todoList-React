@@ -7,10 +7,10 @@ export default function Item() {
         <p>Coding</p>
       </div>
       <div className="flex items-center justify-center gap-2">
-        <p className="bg-green-500 text-sm rounded-full px-2 text-white font-bold">
+        <p className="bg-green-500 font-[400] text-xs rounded-full px-3 py-1 text-white ">
           Personal
         </p>
-        <p className=" text-xs rounded-full px-2 border-2 border-black font-bold">
+        <p className=" text-xs rounded-full px-2 border-2 border-[1px solid black] font-[500]">
           20102
         </p>
         <RiDeleteBinLine className=" hover:bg-gray-100  cursor-pointer  w-[20%] h-[20%] p-2 rounded-full text-red-500 text-xl" />
