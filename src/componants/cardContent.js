@@ -16,6 +16,10 @@ export default function CardContent() {
   const addItems = ()=>{
     if(input.current.value.length == 0){
       toast.error('try again')
+    }else {
+      toast.success('good')
+      console.log('task succefuly done ');
+      
     }
   }
   
