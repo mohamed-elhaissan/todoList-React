@@ -9,11 +9,12 @@ import "react-toastify/dist/ReactToastify.css";
 export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const { todoitem, setTodoItems } = useContext(todoContext);
+  const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
   const optionInput = useRef();
   const dateInput = useRef();
-
+  console.log(typeof todoItem);
+  
   const addItems = () => {
     if (input.current.value.length == 0) {
       toast.error("try again");
@@ -24,8 +25,8 @@ export default function CardContent() {
         datetime: dateInput.current.value,
         color: "green",
       };
-      setTodoItems([...todoitem, item]);
-      console.log(todoitem);
+      setTodoItems([...todoItem, item]);
+      console.log(todoItem);
 
       toast.success("good");
     }
@@ -83,14 +84,16 @@ export default function CardContent() {
       </div>
       <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full"></div>
       <div>
-        {todoitem?.map((item, index) => (
-          <Item
-            inputitem={item.task}
-            optionval={item.option}
-            dateval={item.datetime}
-            color={item.color}
-          />
-        ))}
+        {todoItem?.length == 0 ? 'empty list ': (
+          todoItem?.map((item, index) => (
+            <Item key={index}
+              inputitem={item.task}
+              optionval={item.option}
+              dateval={item.datetime}
+              color={item.color}
+            />
+          ))
+        )}
       </div>
     </div>
   );
