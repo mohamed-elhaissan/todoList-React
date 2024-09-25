@@ -8,13 +8,13 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [option, setOption] = useState(0);
 
   const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
   const optionInput = useRef();
   const dateInput = useRef();
-  console.log(typeof todoItem);
-  
+  const Colors = ["#3B82F6", "#22C55E", "#EAB308", "#A855F7"];
   const addItems = () => {
     if (input.current.value.length == 0) {
       toast.error("try again");
@@ -23,8 +23,10 @@ export default function CardContent() {
         task: input.current.value,
         option: optionInput.current.value,
         datetime: dateInput.current.value,
-        color: "green",
+        color: Colors[option],
       };
+      console.log(option);
+
       setTodoItems([...todoItem, item]);
       console.log(todoItem);
 
@@ -52,18 +54,10 @@ export default function CardContent() {
           ref={optionInput}
           className="border focus:outline-4 focus:outline-[#6366F1] rounded-lg cursor-pointer px-5"
         >
-          <option color="blue-600" value="Work">
-            Work
-          </option>
-          <option color="green-600" value="Personal">
-            Personal
-          </option>
-          <option color="orenge-600" value="Shopping">
-            Shopping
-          </option>
-          <option color="red-600" value="Other">
-            Other
-          </option>
+          <option value="Work">Work</option>
+          <option value="Personal">Personal</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Other">Other</option>
         </select>
         <div>
           <input
@@ -84,16 +78,17 @@ export default function CardContent() {
       </div>
       <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full"></div>
       <div>
-        {todoItem?.length == 0 ? 'empty list ': (
-          todoItem?.map((item, index) => (
-            <Item key={index}
-              inputitem={item.task}
-              optionval={item.option}
-              dateval={item.datetime}
-              color={item.color}
-            />
-          ))
-        )}
+        {todoItem?.length == 0
+          ? (<span>Empty List</span>)
+          : todoItem?.map((item, index) => (
+              <Item
+                key={index}
+                inputitem={item.task}
+                optionval={item.option}
+                dateval={item.datetime}
+                color={item.color}
+              />
+            ))}
       </div>
     </div>
   );
