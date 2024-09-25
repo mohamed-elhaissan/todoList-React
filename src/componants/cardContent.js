@@ -1,38 +1,43 @@
 import { GoPlus } from "react-icons/go";
-import moment from "moment"; // Or use date-fns
-import Item from "./items";
-import { useContext, useRef, useState } from "react";
+import moment from "moment";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { useContext, useEffect, useRef, useState } from "react";
 import { todoContext } from "../context/todolistItems";
 import { toast, ToastContainer } from "react-toastify";
 import imageEmpty from "../assestes/imageEmpty.svg";
-
+import { motion } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [option, setOption] = useState(0);
-
   const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
   const optionInput = useRef();
   const dateInput = useRef();
   const Colors = ["#3B82F6", "#22C55E", "#EAB308", "#A855F7"];
-  const addItems = () => {
-    if (input.current.value.length == 0) {
-      toast.error("Error adding task. Please try again later");
-    } else {
-      const item = {
-        task: input.current.value,
-        option: optionInput.current.value,
-        datetime: dateInput.current.value,
-        color: Colors[option],
-      };
-      console.log(option);
-
-      setTodoItems([...todoItem, item]);
-      console.log(todoItem);
-
-      toast.success("Task added successfully");
-    }
+  useEffect(()=>{
+    const addItems = () => {
+      if (input.current.value.length == 0) {
+        toast.error("Error adding task. Please try again later");
+      } else {
+        const item = {
+          id: todoItem.length,
+          task: input.current.value,
+          choose: optionInput.current.value,
+          datetime: dateInput.current.value,
+          color: Colors[option],
+        };
+        console.log(option);
+  
+        setTodoItems([...todoItem, item]);
+        console.log(todoItem);
+  
+        toast.success("Task added successfully");
+      }
+    };
+  },[input.current.value])
+  const deleteItem = (id) => {
+    setTodoItems((prev) => prev.filter((item) => item.id != id));
   };
 
   const formattedDate = moment(currentDate).format("YYYY-MM-DD");
@@ -79,32 +84,54 @@ export default function CardContent() {
       </div>
       <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full"></div>
       <div>
-        {todoItem?.length === 0 ? (
-          <span>
-            Empty List
+        {todoItem?.length == 0 ? (
+          <div className=" h-[80vh] flex flex-col-reverse justify-center items-center">
+            <span className="text-3xl tracking-tight word-spacing-2">
+              Nothing to do here yet
+            </span>
             <img src={imageEmpty} alt="" />
-          </span>
+          </div>
         ) : (
           todoItem?.map((item, index) => {
             index == todoItem.length - 1 ? (
-              <div>
-                <Item
-                  key={index}
-                  inputitem={item.task}
-                  optionval={item.option}
-                  dateval={item.datetime}
-                  color={item.color}
-                />
+              <div key={index}
+                className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-1/2"
+              >
+                <div className="flex items-center justify-center gap-2 ">
+                  <input type="checkbox" className="w-[100%] h-[100%]" />
+                  <p>{item.task}</p>
+                </div>
+                <div className="flex  items-center justify-center gap-2">
+                  <p
+                    className="bg-green-500 font-[400] text-xs rounded-full px-3 py-1 text-white "
+                    style={{ background: item.color }}
+                  >
+                    {item.choose}
+                  </p>
+                  <p className=" text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
+                    {item.datetime}
+                  </p>
+                  <RiDeleteBinLine className=" hover:bg-gray-100  cursor-pointer  w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl" />
+                </div>
               </div>
             ) : (
-              <div>
-                <Item
-                  key={index}
-                  inputitem={item.task}
-                  optionval={item.option}
-                  dateval={item.datetime}
-                  color={item.color}
-                />
+              <div className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-1/2">
+                <div className="flex items-center justify-center gap-2 ">
+                  <input type="checkbox" className="w-[100%] h-[100%]" />
+                  <p>{item.task}</p>
+                </div>
+                <div className="flex  items-center justify-center gap-2">
+                  <p
+                    className="bg-green-500 font-[400] text-xs rounded-full px-3 py-1 text-white "
+                    style={{ background: item.color }}
+                  >
+                    {item.choose}
+                  </p>
+                  <p className=" text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
+                    {item.datetime}
+                  </p>
+                  <RiDeleteBinLine className=" hover:bg-gray-100  cursor-pointer  w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl" />
+                </div>
               </div>
             );
           })
