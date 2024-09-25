@@ -4,6 +4,7 @@ import Item from "./items";
 import { useContext, useRef, useState } from "react";
 import { todoContext } from "../context/todolistItems";
 import { toast, ToastContainer } from "react-toastify";
+import imageEmpty from "../assestes/imageEmpty.svg";
 
 import "react-toastify/dist/ReactToastify.css";
 export default function CardContent() {
@@ -17,7 +18,7 @@ export default function CardContent() {
   const Colors = ["#3B82F6", "#22C55E", "#EAB308", "#A855F7"];
   const addItems = () => {
     if (input.current.value.length == 0) {
-      toast.error("try again");
+      toast.error("Error adding task. Please try again later");
     } else {
       const item = {
         task: input.current.value,
@@ -30,7 +31,7 @@ export default function CardContent() {
       setTodoItems([...todoItem, item]);
       console.log(todoItem);
 
-      toast.success("good");
+      toast.success("Task added successfully");
     }
   };
 
@@ -78,17 +79,36 @@ export default function CardContent() {
       </div>
       <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full"></div>
       <div>
-        {todoItem?.length == 0
-          ? (<span>Empty List</span>)
-          : todoItem?.map((item, index) => (
-              <Item
-                key={index}
-                inputitem={item.task}
-                optionval={item.option}
-                dateval={item.datetime}
-                color={item.color}
-              />
-            ))}
+        {todoItem?.length === 0 ? (
+          <span>
+            Empty List
+            <img src={imageEmpty} alt="" />
+          </span>
+        ) : (
+          todoItem?.map((item, index) => {
+            index == todoItem.length - 1 ? (
+              <div>
+                <Item
+                  key={index}
+                  inputitem={item.task}
+                  optionval={item.option}
+                  dateval={item.datetime}
+                  color={item.color}
+                />
+              </div>
+            ) : (
+              <div>
+                <Item
+                  key={index}
+                  inputitem={item.task}
+                  optionval={item.option}
+                  dateval={item.datetime}
+                  color={item.color}
+                />
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
