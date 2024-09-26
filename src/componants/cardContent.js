@@ -25,6 +25,7 @@ export default function CardContent() {
         choose: optionInput.current.value,
         datetime: dateInput.current.value,
         color: Colors[option],
+        completed : false ,
       };
       console.log(option);
 
@@ -32,6 +33,7 @@ export default function CardContent() {
       console.log(todoItem);
 
       toast.success("Task added successfully");
+      input.current.value = ''
     }
   };
   const deleteItem = (id) => {
@@ -72,7 +74,7 @@ export default function CardContent() {
             className="border cursor-pointer rounded-md px-4 py-2 bg-white shadow-sm focus:outline-4 focus:outline-[#6366F1]"
           />
         </div>
-        <button
+        <button 
           onClick={addItems}
           className="flex bg-black  focus:ring-blue-900 justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2"
         >
@@ -92,23 +94,22 @@ export default function CardContent() {
         ) : (
           todoItem?.map(({ id, task, choose, datetime, color }, index) => (
             <motion.div
-            initial={{
-              opacity: index == todoItem.length-1 ? 0 : 1, 
-              y: index == todoItem.length-1 ? "-10px" : '0px', 
-            }}
-            animate={{
-              opacity:  1, 
-              y: 0 
-            }}
-            transition={{duration:0.5}}
-              key={id}
+              key={index}
+              initial={{
+                opacity: index == todoItem.length - 1 ? 0 : 1,
+                y: index == todoItem.length - 1 ? "-10px" : "0px",
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{ duration: 0.5 }}
               className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-1/2"
             >
               <div className="flex items-center justify-center gap-2">
                 <input
                   type="checkbox"
                   className="w-[100%] h-[100%]"
-                  aria-label="Complete task"
                 />
                 <p>{task}</p>
               </div>
