@@ -6,7 +6,7 @@ import { todoContext } from "../context/todolistItems";
 import { toast, ToastContainer } from "react-toastify";
 import imageEmpty from "../assestes/imageEmpty.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [option, setOption] = useState(0);
@@ -25,7 +25,7 @@ export default function CardContent() {
         choose: optionInput.current.value,
         datetime: dateInput.current.value,
         color: Colors[option],
-        completed : false ,
+        completed: false,
       };
       console.log(option);
 
@@ -33,7 +33,7 @@ export default function CardContent() {
       console.log(todoItem);
 
       toast.success("Task added successfully");
-      input.current.value = ''
+      input.current.value = "";
     }
   };
   const deleteItem = (id) => {
@@ -74,7 +74,7 @@ export default function CardContent() {
             className="border cursor-pointer rounded-md px-4 py-2 bg-white shadow-sm focus:outline-4 focus:outline-[#6366F1]"
           />
         </div>
-        <button 
+        <button
           onClick={addItems}
           className="flex bg-black  focus:ring-blue-900 justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2"
         >
@@ -85,51 +85,59 @@ export default function CardContent() {
       <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full"></div>
       <div>
         {todoItem?.length === 0 ? (
-          <div className="h-[80vh] flex flex-col-reverse justify-center items-center">
+          <motion.div
+            exit={{ opacity: 0 }}
+            className="h-[80vh] flex flex-col-reverse justify-center items-center"
+          >
             <span className="text-3xl tracking-tight word-spacing-2">
               Nothing to do here yet
             </span>
             <img src={imageEmpty} alt="" />
-          </div>
+          </motion.div>
         ) : (
+          <AnimatePresence>
+            {
           todoItem?.map(({ id, task, choose, datetime, color }, index) => (
-            <motion.div
-              key={index}
-              initial={{
-                opacity: index == todoItem.length - 1 ? 0 : 1,
-                y: index == todoItem.length - 1 ? "-10px" : "0px",
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{ duration: 0.5 }}
-              className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-1/2"
-            >
-              <div className="flex items-center justify-center gap-2">
-                <input
-                  type="checkbox"
-                  className="w-[100%] h-[100%]"
-                />
-                <p>{task}</p>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <p
-                  className="bg-green-500 font-[400] text-xs rounded-full px-3 py-1 text-white"
-                  style={{ background: color }}
-                >
-                  {choose}
-                </p>
-                <p className="text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
-                  {datetime}
-                </p>
-                <RiDeleteBinLine
-                  className="hover:bg-gray-100 cursor-pointer w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl"
-                  aria-label="Delete task"
-                />
-              </div>
-            </motion.div>
-          ))
+              <motion.div
+                key={index}
+                initial={{
+                  opacity: index == todoItem.length - 1 ? 0 : 1,
+                  y: index == todoItem.length - 1 ? "-10px" : "0px",
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  y: "-10px",
+                }}
+                transition={{ duration: 0.5 }}
+                className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <input type="checkbox" className="w-[100%] h-[100%]" />
+                  <p>{task}</p>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <p
+                    className="bg-green-500 font-[400] text-xs rounded-full px-3 py-1 text-white"
+                    style={{ background: color }}
+                  >
+                    {choose}
+                  </p>
+                  <p className="text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
+                    {datetime}
+                  </p>
+                  <RiDeleteBinLine
+                    onClick={() => deleteItem(id)}
+                    className="hover:bg-gray-100 cursor-pointer w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl"
+                    aria-label="Delete task"
+                  />
+                </div>
+              </motion.div>
+          ))}
+            </AnimatePresence>
         )}
       </div>
     </div>
