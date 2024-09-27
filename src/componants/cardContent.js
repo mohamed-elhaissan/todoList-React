@@ -96,8 +96,7 @@ export default function CardContent() {
           </motion.div>
         ) : (
           <AnimatePresence>
-            {
-          todoItem?.map(({ id, task, choose, datetime, color }, index) => (
+            {todoItem?.map(({ id, task, choose, datetime, color }, index) => (
               <motion.div
                 key={index}
                 initial={{
@@ -112,11 +111,15 @@ export default function CardContent() {
                   opacity: 0,
                   y: "-10px",
                 }}
-                transition={{ duration: 0.5 }}
+                layout
+                transition={{ duration: 0.2 }}
                 className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
               >
-                <div className="flex items-center justify-center gap-2">
-                  <input type="checkbox" className="w-[100%] h-[100%]" />
+                <div className="flex relative items-center justify-center gap-2">
+                  <div className="w-6 h-6 bg-red-300">
+                    <div className="h-1 rotate-[60deg] w-4 absolute -left-[5%] rounded-full top-[10%] bg-blue-700"></div>
+                    <div className="h-1 rounded-full rotate-[-60%] w-7 absolute right-0 top-0 bg-blue-700"></div>
+                  </div>
                   <p>{task}</p>
                 </div>
                 <div className="flex items-center justify-center gap-2">
@@ -136,8 +139,8 @@ export default function CardContent() {
                   />
                 </div>
               </motion.div>
-          ))}
-            </AnimatePresence>
+            ))}
+          </AnimatePresence>
         )}
       </div>
     </div>
