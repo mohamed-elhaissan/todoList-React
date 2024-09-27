@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence, motion } from "framer-motion";
 export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [isCompleted,setCompleted] = useState()
   const [option, setOption] = useState(0);
   const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
@@ -96,50 +97,76 @@ export default function CardContent() {
           </motion.div>
         ) : (
           <AnimatePresence>
-            {todoItem?.map(({ id, task, choose, datetime, color }, index) => (
-              <motion.div
-                key={index}
-                initial={{
-                  opacity: index == todoItem.length - 1 ? 0 : 1,
-                  y: index == todoItem.length - 1 ? "-10px" : "0px",
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: "-10px",
-                }}
-                layout
-                transition={{ duration: 0.2 }}
-                className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
-              >
-                <div className="flex relative items-center justify-center gap-2">
-                  <div className="w-6 h-6 bg-red-300">
-                    <div className="h-1 rotate-[60deg] w-4 absolute -left-[5%] rounded-full top-[10%] bg-blue-700"></div>
-                    <div className="h-1 rounded-full rotate-[-60%] w-7 absolute right-0 top-0 bg-blue-700"></div>
+            {todoItem?.map(
+              ({ id, task, choose, datetime, color, completed }, index) => (
+                <motion.div
+                  key={index}
+                  initial={{
+                    opacity: index == todoItem.length - 1 ? 0 : 1,
+                    y: index == todoItem.length - 1 ? "-10px" : "0px",
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: "-10px",
+                  }}
+                  layout
+                  transition={{ duration: 0.2 }}
+                  className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
+                >
+                  <div className="flex relative items-center justify-center gap-2">
+                    <div
+                      className="w-6 h-6 bg-gray-300 cursor-pointer"
+                      onClick={() => {
+                        const updatedList = [...todoItem]
+                        updatedList[index].completed = !updatedList[index].completed
+                        setTodoItems(updatedList)
+                      }}
+                    >
+                      <motion.svg 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: completed ? 1 : 0 }}
+                        transition={{
+                          duration : 0.5,
+                          ease : 'backInOut'
+                        }}
+
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.2568 19.3364C10.6138 19.3364 10.896 19.1787 11.0952 18.8716L18.9395 6.52002C19.0889 6.2793 19.147 6.09668 19.147 5.90576C19.147 5.44922 18.8481 5.15039 18.3916 5.15039C18.0596 5.15039 17.877 5.2583 17.6777 5.57373L10.2236 17.4521L6.35547 12.3887C6.14795 12.0981 5.94043 11.9819 5.6416 11.9819C5.16846 11.9819 4.84473 12.3057 4.84473 12.7622C4.84473 12.9531 4.92773 13.1689 5.08545 13.3682L9.39355 18.855C9.64258 19.1787 9.8999 19.3364 10.2568 19.3364Z"
+                          fill="#23AA79"
+                        />
+                      </motion.svg>
+                    </div>
+                    <p>{task}</p>
                   </div>
-                  <p>{task}</p>
-                </div>
-                <div className="flex items-center justify-center gap-2">
-                  <p
-                    className="bg-green-500 font-[400] text-xs rounded-full px-3 py-1 text-white"
-                    style={{ background: color }}
-                  >
-                    {choose}
-                  </p>
-                  <p className="text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
-                    {datetime}
-                  </p>
-                  <RiDeleteBinLine
-                    onClick={() => deleteItem(id)}
-                    className="hover:bg-gray-100 cursor-pointer w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl"
-                    aria-label="Delete task"
-                  />
-                </div>
-              </motion.div>
-            ))}
+                  <div className="flex items-center justify-center gap-2">
+                    <p
+                      className="bg-green-500 font-[400] text-xs rounded-full px-3 py-1 text-white"
+                      style={{ background: color }}
+                    >
+                      {choose}
+                    </p>
+                    <p className="text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
+                      {datetime}
+                    </p>
+                    <RiDeleteBinLine
+                      onClick={() => deleteItem(id)}
+                      className="hover:bg-gray-100 cursor-pointer w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl"
+                      aria-label="Delete task"
+                    />
+                  </div>
+                </motion.div>
+              )
+            )}
           </AnimatePresence>
         )}
       </div>
