@@ -5,11 +5,11 @@ import { useContext, useRef, useState } from "react";
 import { todoContext } from "../context/todolistItems";
 import { toast, ToastContainer } from "react-toastify";
 import imageEmpty from "../assestes/imageEmpty.svg";
-import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence, motion } from "framer-motion";
 export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [isCompleted,setCompleted] = useState()
+  const [message,setmessagge] = useState('')
+  const [showmessage,setShowmessage] =useState(false)
   const [option, setOption] = useState(0);
   const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
@@ -18,7 +18,7 @@ export default function CardContent() {
   const Colors = ["#3B82F6", "#22C55E", "#EAB308", "#A855F7"];
   const addItems = () => {
     if (input.current.value.length === 0) {
-      toast.error("Error adding task. Please try again later");
+      setmessagge('Error adding task. Please try again later')
     } else {
       const item = {
         id: todoItem.length,
@@ -31,24 +31,38 @@ export default function CardContent() {
       console.log(option);
 
       setTodoItems([...todoItem, item]);
-      console.log(todoItem);
 
-      toast.success("Task added successfully");
+      console.log(todoItem);
+      setmessagge('Task added successfully')
+
       input.current.value = "";
     }
   };
   const deleteItem = (id) => {
     setTodoItems((prev) => prev.filter((item) => item.id !== id));
   };
-
   const formattedDate = moment(currentDate).format("YYYY-MM-DD");
   const handleChange = (event) => {
     setCurrentDate(new Date(event.target.value));
   };
+  const porcentage =
+    (todoItem.filter((item) => item.completed).length / todoItem.length) *
+      100 || 0;
   return (
     <div>
       <div>
-        <ToastContainer />
+        {
+          showmessage %% (
+            <div 
+          layout
+          initial={{ y: -15, scale: 0.95 }}
+          animate={{ y: 0, scale: 1 }}
+          exit={{ x: "100%", opacity: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="p-2 absolute right-0 flex items-start rounded gap-2 text-xs font-medium shadow-lg text-white bg-indigo-500 pointer-events-auto"
+        >{message}</div>
+          )
+        }
       </div>
       <div className="flex  relative w-[80%] font-[600]  mx-auto mb-4c gap-5  b ">
         <input
@@ -83,7 +97,14 @@ export default function CardContent() {
           Add
         </button>
       </div>
-      <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full"></div>
+      <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-[#22C55E] transition-all duration-500 ease-out rounded-full"
+          style={{
+            width: `${porcentage}%`,
+          }}
+        ></div>
+      </div>
       <div>
         {todoItem?.length === 0 ? (
           <motion.div
@@ -101,39 +122,34 @@ export default function CardContent() {
               ({ id, task, choose, datetime, color, completed }, index) => (
                 <motion.div
                   key={index}
-                  initial={{
-                    opacity: index == todoItem.length - 1 ? 0 : 1,
-                    y: index == todoItem.length - 1 ? "-10px" : "0px",
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
+                  initial={{ y: -15, scale: 0.95 }}
+                  animate={{ y: 0, scale: 1 }}
+               
                   exit={{
-                    opacity: 0,
-                    y: "-10px",
+                    
+                    opacity : 0,
+                    y : "-10px"
                   }}
-                  layout
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
                   className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
                 >
                   <div className="flex relative items-center justify-center gap-2">
                     <div
                       className="w-6 h-6 bg-gray-300 cursor-pointer"
                       onClick={() => {
-                        const updatedList = [...todoItem]
-                        updatedList[index].completed = !updatedList[index].completed
-                        setTodoItems(updatedList)
+                        const updatedList = [...todoItem];
+                        updatedList[index].completed =
+                          !updatedList[index].completed;
+                        setTodoItems(updatedList);
                       }}
                     >
-                      <motion.svg 
+                      <motion.svg
                         initial={{ scale: 0 }}
                         animate={{ scale: completed ? 1 : 0 }}
                         transition={{
-                          duration : 0.5,
-                          ease : 'backInOut'
+                          duration: 0.5,
+                          ease: "backInOut",
                         }}
-
                         width="24"
                         height="24"
                         viewBox="0 0 24 24"
@@ -159,7 +175,9 @@ export default function CardContent() {
                       {datetime}
                     </p>
                     <RiDeleteBinLine
-                      onClick={() => deleteItem(id)}
+                      onClick={() => {
+                        deleteItem(id);
+                      }}
                       className="hover:bg-gray-100 cursor-pointer w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl"
                       aria-label="Delete task"
                     />
