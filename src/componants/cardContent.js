@@ -1,15 +1,16 @@
 import { GoPlus } from "react-icons/go";
 import moment from "moment";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { useContext, useRef, useState } from "react";
+import { FiX } from "react-icons/fi";
+import { useContext, useEffect, useRef, useState } from "react";
 import { todoContext } from "../context/todolistItems";
-import { toast, ToastContainer } from "react-toastify";
+import { FiCheckSquare } from "react-icons/fi";
 import imageEmpty from "../assestes/imageEmpty.svg";
 import { AnimatePresence, motion } from "framer-motion";
 export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [message,setmessagge] = useState('')
-  const [showmessage,setShowmessage] =useState(false)
+  const [message, setmessagge] = useState("");
+  const [showmessage, setShowmessage] = useState(false);
   const [option, setOption] = useState(0);
   const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
@@ -18,26 +19,39 @@ export default function CardContent() {
   const Colors = ["#3B82F6", "#22C55E", "#EAB308", "#A855F7"];
   const addItems = () => {
     if (input.current.value.length === 0) {
-      setmessagge('Error adding task. Please try again later')
+      setmessagge("Error adding task");
+      setShowmessage(true);
     } else {
       const item = {
         id: todoItem.length,
         task: input.current.value,
         choose: optionInput.current.value,
         datetime: dateInput.current.value,
-        color: Colors[option],
+        color: Colors[optionInput.current.options.selectedIndex],
         completed: false,
       };
-      console.log(option);
+      
 
       setTodoItems([...todoItem, item]);
 
       console.log(todoItem);
-      setmessagge('Task added successfully')
+      setShowmessage(true);
+      setmessagge("Task added successfully");
 
       input.current.value = "";
     }
   };
+  useEffect(() => {
+    let timeout;
+    if (showmessage) {
+      timeout = setTimeout(() => {
+        setShowmessage(false);
+      }, 4000);
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [showmessage]);
   const deleteItem = (id) => {
     setTodoItems((prev) => prev.filter((item) => item.id !== id));
   };
@@ -51,18 +65,28 @@ export default function CardContent() {
   return (
     <div>
       <div>
-        {
-          showmessage %% (
-            <div 
-          layout
-          initial={{ y: -15, scale: 0.95 }}
-          animate={{ y: 0, scale: 1 }}
-          exit={{ x: "100%", opacity: 0 }}
-          transition={{ duration: 0.35, ease: "easeOut" }}
-          className="p-2 absolute right-0 flex items-start rounded gap-2 text-xs font-medium shadow-lg text-white bg-indigo-500 pointer-events-auto"
-        >{message}</div>
-          )
-        }
+        <AnimatePresence>
+          {showmessage && (
+            <motion.div
+              layout
+              initial={{ y: -15, scale: 0.95 }}
+              animate={{ y: 0, scale: 1 }}
+              exit={{ x: "100%", opacity: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="p-2 absolute  z-10 top-2 text-md flex items-center rounded gap-2 right-2  font-medium shadow-lg text-white bg-indigo-500 pointer-events-auto"
+            >
+              <FiCheckSquare className=" mt-0.5" />
+              <span>{message}</span>
+              <button>
+                <FiX
+                  onClick={() => {
+                    setShowmessage(!message);
+                  }}
+                />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       <div className="flex  relative w-[80%] font-[600]  mx-auto mb-4c gap-5  b ">
         <input
@@ -89,13 +113,19 @@ export default function CardContent() {
             className="border cursor-pointer rounded-md px-4 py-2 bg-white shadow-sm focus:outline-4 focus:outline-[#6366F1]"
           />
         </div>
-        <button
+        <motion.button
+        whileHover={{
+          scale: 1.025,
+        }}
+        whileTap={{
+          scale: 0.975,
+        }}
           onClick={addItems}
           className="flex bg-black  focus:ring-blue-900 justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2"
         >
           <GoPlus />
           Add
-        </button>
+        </motion.button>
       </div>
       <div className="h-2 bg-gray-300 mx-auto w-[80%] my-2 rounded-full overflow-hidden">
         <div
@@ -124,11 +154,9 @@ export default function CardContent() {
                   key={index}
                   initial={{ y: -15, scale: 0.95 }}
                   animate={{ y: 0, scale: 1 }}
-               
                   exit={{
-                    
-                    opacity : 0,
-                    y : "-10px"
+                    opacity: 0,
+                    y: "-10px",
                   }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
                   className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
@@ -162,7 +190,11 @@ export default function CardContent() {
                         />
                       </motion.svg>
                     </div>
-                    <p>{task}</p>
+                    <p className={`before before:content['']  relative before:transition-all before:duration-150 before:ease-in-out ${completed ? "before:w-full" : 'before:w-0'} before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[2px] before:bg-black`}
+                   
+                    >
+                      {task}
+                    </p>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <p
@@ -174,6 +206,9 @@ export default function CardContent() {
                     <p className="text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
                       {datetime}
                     </p>
+                    <div>
+                      a
+                    </div>
                     <RiDeleteBinLine
                       onClick={() => {
                         deleteItem(id);
