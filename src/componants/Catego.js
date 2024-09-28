@@ -14,7 +14,7 @@ export default function Catego() {
         <FlipedLinks href="youtube.com">completed</FlipedLinks>
       </div>
       <div
-        className="flex justify-center ls-center gap-1 cursor-pointer text-xl"
+        className="flex justify-center ls-center items-center gap-1 cursor-pointer text-xl"
         onClick={() => {
           setDarkModeActvated(!isDarkModeActvated);
         }}
@@ -53,9 +53,9 @@ const FlipedLinks = ({ children, href }) => {
                   hovered: { y: "-100%" },
                 }}
                 transition={{
-                  duration : 0.3,
-                  ease : 'easeInOut',
-                  delay : 0.025 * i
+                  duration: 0.3,
+                  ease: "easeInOut",
+                  delay: 0.025 * i,
                 }}
                 key={i}
               >
@@ -75,7 +75,7 @@ const FlipedLinks = ({ children, href }) => {
                 transition={{
                   duration: 0.3,
                   ease: "easeInOut",
-                  delay: 0.025 * i, 
+                  delay: 0.025 * i,
                 }}
                 key={i}
               >

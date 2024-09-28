@@ -11,7 +11,7 @@ export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [message, setmessagge] = useState("");
   const [showmessage, setShowmessage] = useState(false);
-  const [option, setOption] = useState(0);
+  const [isDeleted, setIsDeleted] = useState(false);
   const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
   const optionInput = useRef();
@@ -30,7 +30,6 @@ export default function CardContent() {
         color: Colors[optionInput.current.options.selectedIndex],
         completed: false,
       };
-      
 
       setTodoItems([...todoItem, item]);
 
@@ -114,12 +113,12 @@ export default function CardContent() {
           />
         </div>
         <motion.button
-        whileHover={{
-          scale: 1.025,
-        }}
-        whileTap={{
-          scale: 0.975,
-        }}
+          whileHover={{
+            scale: 1.025,
+          }}
+          whileTap={{
+            scale: 0.975,
+          }}
           onClick={addItems}
           className="flex bg-black  focus:ring-blue-900 justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2"
         >
@@ -159,7 +158,7 @@ export default function CardContent() {
                     y: "-10px",
                   }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
+                  className="relative shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
                 >
                   <div className="flex relative items-center justify-center gap-2">
                     <div
@@ -190,8 +189,10 @@ export default function CardContent() {
                         />
                       </motion.svg>
                     </div>
-                    <p className={`before before:content['']  relative before:transition-all before:duration-150 before:ease-in-out ${completed ? "before:w-full" : 'before:w-0'} before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[2px] before:bg-black`}
-                   
+                    <p
+                      className={`before before:content['']  relative before:transition-all before:duration-150 before:ease-in-out ${
+                        completed ? "before:w-full" : "before:w-0"
+                      } before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-[2px] before:bg-black`}
                     >
                       {task}
                     </p>
@@ -206,12 +207,91 @@ export default function CardContent() {
                     <p className="text-xs rounded-full px-2 border-2 border-[1px solid black] w-full font-[500]">
                       {datetime}
                     </p>
-                    <div>
-                      a
-                    </div>
+                    {
+                      <AnimatePresence>
+                        {isDeleted && (
+                          <motion.div
+                            initial={{
+                              opacity: 0,
+                              y: -10,
+                            }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                            }}
+                            transition={{
+                              duration: 0.3,
+                              ease: "easeInOut",
+                            }}
+                            className="absolute p-4 rounded-lg top-[50%] right-0 bg-white shadow-lg w-[300px] "
+                          >
+                            <h2 className="text-xl text-center text-red-500 font-bold">
+                              Delete Item
+                            </h2>
+                            <hr></hr>
+                            <p className="opacity-50 my-2">Are u Sure </p>
+                            <hr></hr>
+                            <div className="mt-3 flex items-center justify-center gap-3">
+                              <motion.button
+                                whileHover={{
+                                  scale: 1.025,
+                                }}
+                                whileTap={{
+                                  scale: 0.975,
+                                }}
+                                className="border px-3  border-black rounded-sm  p-2 "
+                                onClick={() => {
+                                  setIsDeleted(false);
+                                }}
+                              >
+                                Cancel
+                              </motion.button>
+                              <motion.button
+                                whileHover="hovered"
+                                whileTap={{
+                                  scale: 0.975,
+                                }}
+                                className="flex items-center gap-2 px-5 rounded-sm bg-red-500 text-white  p-2"
+                              >
+                                <div>
+                                  <motion.svg
+                                    variants={{
+                                      hovered: { y: -5, rotate: -45, x: -5 },
+                                    }}
+                                    width="15"
+                                    height="6"
+                                    viewBox="0 0 15 6"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M13.5549 2.12512L10.3836 2.11979L10.3845 1.5942C10.386 0.723368 9.61272 0.0161356 8.65736 0.0145306L6.35096 0.0106557C5.39561 0.00905072 4.61998 0.713681 4.61851 1.58452L4.61763 2.1101L1.44633 2.10478C0.650226 2.10344 0.00384145 2.69065 0.0026223 3.41633L0.00085629 4.4675C0.000368595 4.75779 0.25811 4.99353 0.576573 4.99406L14.415 5.01731C14.7334 5.01784 14.992 4.78298 14.9925 4.49269L14.9942 3.44151C14.9954 2.71584 14.351 2.12646 13.5549 2.12512ZM5.77171 1.58645C5.7722 1.29672 6.03135 1.0613 6.3492 1.06183L8.6556 1.06571C8.97345 1.06624 9.2318 1.30253 9.23132 1.59227L9.23043 2.11785L5.77083 2.11204L5.77171 1.58645Z"
+                                      fill="white"
+                                    />
+                                  </motion.svg>
+                                  <svg
+                                    width="13"
+                                    height="11"
+                                    viewBox="0 0 13 11"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M0.175584 -0.00630852C0.074032 -0.00647899 -0.00702404 0.0732931 -0.00234711 0.168815L0.451577 9.44781C0.493528 10.3066 1.2415 10.9803 2.15423 10.9818L10.797 10.9964C11.7098 10.9979 12.46 10.3267 12.5048 9.46804L12.99 0.190625C12.995 0.0951189 12.9142 0.0150751 12.8126 0.0149046L0.175584 -0.00630852ZM8.76833 1.34773C8.76883 1.05168 9.02392 0.812313 9.33836 0.812841C9.6528 0.813369 9.90707 1.05359 9.90658 1.34964L9.89486 8.31561C9.89437 8.61167 9.63928 8.85103 9.32484 8.8505C9.0104 8.84997 8.75612 8.60975 8.75662 8.3137L8.76833 1.34773ZM5.92273 1.34295C5.92323 1.0469 6.17831 0.807536 6.49275 0.808064C6.80719 0.808592 7.06147 1.04881 7.06097 1.34486L7.04926 8.31083C7.04876 8.60689 6.79368 8.84625 6.47924 8.84572C6.1648 8.8452 5.91052 8.60498 5.91102 8.30892L5.92273 1.34295ZM3.07713 1.33818C3.07763 1.04212 3.33271 0.802759 3.64715 0.803287C3.96159 0.803815 4.21587 1.04403 4.21537 1.34009L4.20366 8.30606C4.20316 8.60211 3.94807 8.84147 3.63363 8.84095C3.3192 8.84042 3.06492 8.6002 3.06542 8.30415L3.07713 1.33818Z"
+                                      fill="white"
+                                    />
+                                  </svg>
+                                </div>
+                                Delete
+                              </motion.button>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    }
                     <RiDeleteBinLine
                       onClick={() => {
-                        deleteItem(id);
+                        setIsDeleted(true);
                       }}
                       className="hover:bg-gray-100 cursor-pointer w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl"
                       aria-label="Delete task"
