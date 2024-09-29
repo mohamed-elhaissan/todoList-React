@@ -1,6 +1,8 @@
 import { GoPlus } from "react-icons/go";
 import moment from "moment";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
 import { FiX } from "react-icons/fi";
 import { useContext, useEffect, useRef, useState } from "react";
 import { todoContext } from "../context/todolistItems";
@@ -11,7 +13,6 @@ export default function CardContent() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [message, setmessagge] = useState("");
   const [showmessage, setShowmessage] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
   const { todoItem, setTodoItems } = useContext(todoContext);
   const input = useRef();
   const optionInput = useRef();
@@ -29,6 +30,7 @@ export default function CardContent() {
         datetime: dateInput.current.value,
         color: Colors[optionInput.current.options.selectedIndex],
         completed: false,
+        isDeleted : false
       };
 
       setTodoItems([...todoItem, item]);
@@ -51,6 +53,11 @@ export default function CardContent() {
       clearTimeout(timeout);
     };
   }, [showmessage]);
+  const showisDeleted = (id)=>{
+    const newTodoItems = [...todoItem];
+     newTodoItems[id].isDeleted = !newTodoItems[id].isDeleted
+    setTodoItems([...newTodoItems])
+  }
   const deleteItem = (id) => {
     setTodoItems((prev) => prev.filter((item) => item.id !== id));
   };
@@ -148,7 +155,7 @@ export default function CardContent() {
         ) : (
           <AnimatePresence>
             {todoItem?.map(
-              ({ id, task, choose, datetime, color, completed }, index) => (
+              ({ id, task, choose, datetime, color, completed,isDeleted }, index) => (
                 <motion.div
                   key={index}
                   initial={{ y: -15, scale: 0.95 }}
@@ -223,14 +230,15 @@ export default function CardContent() {
                               duration: 0.3,
                               ease: "easeInOut",
                             }}
-                            className="absolute p-4 rounded-lg top-[50%] right-0 bg-white shadow-lg w-[300px] "
+                            className="absolute p-4 rounded-lg top-[50%] right-0 bg-white shadow-lg  "
                           >
-                            <h2 className="text-xl text-center text-red-500 font-bold">
+                            <h2 className="text-xl flex gap-2 items-center   font-bold">
+                              <RiDeleteBin6Line className="text-red-500" />
                               Delete Item
                             </h2>
-                            <hr></hr>
-                            <p className="opacity-50 my-2">Are u Sure </p>
-                            <hr></hr>
+                            <p className="opacity-50 my-2">
+                              Are you sure you want to delete this item?
+                            </p>
                             <div className="mt-3 flex items-center justify-center gap-3">
                               <motion.button
                                 whileHover={{
@@ -239,9 +247,9 @@ export default function CardContent() {
                                 whileTap={{
                                   scale: 0.975,
                                 }}
-                                className="border px-3  border-black rounded-sm  p-2 "
-                                onClick={() => {
-                                  setIsDeleted(false);
+                                className="border px-2 text-xs  border-black rounded-sm  p-2 "
+                                onClick={()=>{
+                                  showisDeleted(id)
                                 }}
                               >
                                 Cancel
@@ -251,7 +259,10 @@ export default function CardContent() {
                                 whileTap={{
                                   scale: 0.975,
                                 }}
-                                className="flex items-center gap-2 px-5 rounded-sm bg-red-500 text-white  p-2"
+                                className="flex items-center  gap-2 px-3 text-xs   rounded-sm bg-black text-white  py-2"
+                                onClick={()=>{
+                                  deleteItem(id)
+                                }}
                               >
                                 <div>
                                   <motion.svg
@@ -291,7 +302,7 @@ export default function CardContent() {
                     }
                     <RiDeleteBinLine
                       onClick={() => {
-                        setIsDeleted(true);
+                        showisDeleted(id);
                       }}
                       className="hover:bg-gray-100 cursor-pointer w-[30%] h-[30%] p-2 rounded-full text-red-500 text-xl"
                       aria-label="Delete task"
