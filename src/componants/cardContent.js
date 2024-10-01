@@ -30,7 +30,7 @@ export default function CardContent() {
         datetime: dateInput.current.value,
         color: Colors[optionInput.current.options.selectedIndex],
         completed: false,
-        isDeleted : false
+        isDeleted: false,
       };
 
       setTodoItems([...todoItem, item]);
@@ -53,11 +53,11 @@ export default function CardContent() {
       clearTimeout(timeout);
     };
   }, [showmessage]);
-  const showisDeleted = (id)=>{
+  const showisDeleted = (id) => {
     const newTodoItems = [...todoItem];
-     newTodoItems[id].isDeleted = !newTodoItems[id].isDeleted
-    setTodoItems([...newTodoItems])
-  }
+    newTodoItems[id].isDeleted = !newTodoItems[id].isDeleted;
+    setTodoItems([...newTodoItems]);
+  };
   const deleteItem = (id) => {
     setTodoItems((prev) => prev.filter((item) => item.id !== id));
   };
@@ -155,11 +155,14 @@ export default function CardContent() {
         ) : (
           <AnimatePresence>
             {todoItem?.map(
-              ({ id, task, choose, datetime, color, completed,isDeleted }, index) => (
+              (
+                { id, task, choose, datetime, color, completed, isDeleted },
+                index
+              ) => (
                 <motion.div
                   key={index}
-                  initial={{ y: -15, scale: 0.95 }}
-                  animate={{ y: 0, scale: 1 }}
+                  initial={{ x: index % 2 == 0 ? -10 : 10, scale: 0.95 }}
+                  animate={{ x: 0, scale: 1 }}
                   exit={{
                     opacity: 0,
                     y: "-10px",
@@ -248,8 +251,8 @@ export default function CardContent() {
                                   scale: 0.975,
                                 }}
                                 className="border px-2 text-xs  border-black rounded-sm  p-2 "
-                                onClick={()=>{
-                                  showisDeleted(id)
+                                onClick={() => {
+                                  showisDeleted(id);
                                 }}
                               >
                                 Cancel
@@ -260,8 +263,8 @@ export default function CardContent() {
                                   scale: 0.975,
                                 }}
                                 className="flex items-center  gap-2 px-3 text-xs   rounded-sm bg-black text-white  py-2"
-                                onClick={()=>{
-                                  deleteItem(id)
+                                onClick={() => {
+                                  deleteItem(id);
                                 }}
                               >
                                 <div>
