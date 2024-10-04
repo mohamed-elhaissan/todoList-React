@@ -1,19 +1,18 @@
 import TodoAdvanced from "./componants/todos";
 import Catego from "./componants/Catego";
-import { useEffect, useState } from "react";
-import Dark
+import { useContext, useEffect } from "react";
+import { DarkMode } from "./context/DarkmodeContext";
 function App() {
-
+  const {isDarkModeActvated} = useContext(DarkMode)
   useEffect(()=>{
-    if (darkmodeisActive) {
+    if (isDarkModeActvated) {
       document.body.classList.add('dark')
     }else {
       document.body.classList.remove('dark')
-      document.body.classList.add('light')
 
     }
     
-  },[darkmodeisActive])
+  },[isDarkModeActvated])
   return (
     <div className="flex">
       <Catego/>

@@ -4,7 +4,7 @@ import Darkmode from "./darkmode";
 import { motion } from "framer-motion";
 export default function Catego() {
   return (
-    <div className="w-[20%] bg-white p-4 flex flex-col justify-between h-[100vh] ">
+    <div className="w-[20%] dark:bg-black dark:text-gray-400 bg-white p-4 flex flex-col justify-between h-[100vh] ">
       <div className="flex flex-col justify-start ls-start gap-2 ">
         <h1 className="font-bold text-3xl tracking-tight mb-10">Todo List</h1>
         <FlipedLinks href="youtube.com">Home</FlipedLinks>
@@ -20,14 +20,14 @@ const FlipedLinks = ({ children, href }) => {
     <motion.div
       initial="initial"
       whileHover="hovered"
-      className="border border-[rgba(0,0,0,.4)] flex pl-2 p-2 rounded-md hover:bg-black hover:text-white  w-full "
+      className="border border-[rgba(0,0,0,.4)] flex pl-2 p-2 rounded-md hover:bg-black hover:text-white dark:bg-gray-200  w-full "
     >
       <motion.a className="relative block overflow-hidden" href={href}>
         <motion.div>
           {children &&
             children.split("").map((l, i) => (
               <motion.span
-                className="inline-block"
+                className="inline-block dark:text-black "
                 variants={{
                   initial: { y: 0 },
                   hovered: { y: "-100%" },
@@ -47,7 +47,7 @@ const FlipedLinks = ({ children, href }) => {
           {children &&
             children.split("").map((l, i) => (
               <motion.span
-                className="inline-block"
+                className="inline-block dark:text-black "
                 variants={{
                   initial: { y: "100%" },
                   hovered: { y: 0 },
