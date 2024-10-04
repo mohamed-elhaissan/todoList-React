@@ -69,7 +69,7 @@ export default function CardContent() {
     (todoItem.filter((item) => item.completed).length / todoItem.length) *
       100 || 0;
   return (
-    <div >
+    <div  >
       <div>
         <AnimatePresence>
           {showmessage && (
@@ -94,7 +94,7 @@ export default function CardContent() {
           )}
         </AnimatePresence>
       </div>
-      <div className="flex  relative w-[80%] font-[600]  mx-auto mb-4c gap-5  b dark:bg-red-600">
+      <div className="flex  relative w-[80%] font-[600]  mx-auto mb-4c gap-5">
         <input
           ref={input}
           type="text"
