@@ -30,7 +30,7 @@ export default function CardContent() {
         datetime: dateInput.current.value,
         color: Colors[optionInput.current.options.selectedIndex],
         completed: false,
-        isDeleted : false
+        isDeleted: false,
       };
 
       setTodoItems([...todoItem, item]);
@@ -53,11 +53,11 @@ export default function CardContent() {
       clearTimeout(timeout);
     };
   }, [showmessage]);
-  const showisDeleted = (id)=>{
+  const showisDeleted = (id) => {
     const newTodoItems = [...todoItem];
-     newTodoItems[id].isDeleted = !newTodoItems[id].isDeleted
-    setTodoItems([...newTodoItems])
-  }
+    newTodoItems[id].isDeleted = !newTodoItems[id].isDeleted;
+    setTodoItems([...newTodoItems]);
+  };
   const deleteItem = (id) => {
     setTodoItems((prev) => prev.filter((item) => item.id !== id));
   };
@@ -69,7 +69,7 @@ export default function CardContent() {
     (todoItem.filter((item) => item.completed).length / todoItem.length) *
       100 || 0;
   return (
-    <div  >
+    <div>
       <div>
         <AnimatePresence>
           {showmessage && (
@@ -99,11 +99,11 @@ export default function CardContent() {
           ref={input}
           type="text"
           placeholder="Add a new Task"
-          className="border dark:none font-[500] rounded-lg w-[50%] px-5   focus:outline-[#6366F1]"
+          className="border dark:none font-[500] dark:bg-black dark:text-white dark:border-white rounded-lg w-[50%] px-5   focus:outline-[#6366F1]"
         />
         <select
           ref={optionInput}
-          className="border focus:outline-4 focus:outline-[#6366F1] rounded-lg cursor-pointer px-5"
+          className="border focus:outline-4 dark:bg-black dark:text-white focus:outline-[#6366F1] rounded-lg cursor-pointer px-5"
         >
           <option value="Work">Work</option>
           <option value="Personal">Personal</option>
@@ -116,7 +116,7 @@ export default function CardContent() {
             value={formattedDate}
             onChange={handleChange}
             type="date"
-            className="border cursor-pointer rounded-md px-4 py-2 bg-white shadow-sm focus:outline-4 focus:outline-[#6366F1]"
+            className="border cursor-pointer rounded-md px-4 py-2 bg-white dark:bg-black dark:text-white shadow-sm focus:outline-4 focus:outline-[#6366F1]"
           />
         </div>
         <motion.button
@@ -127,7 +127,7 @@ export default function CardContent() {
             scale: 0.975,
           }}
           onClick={addItems}
-          className="flex bg-black  focus:ring-blue-900 justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2"
+          className="flex bg-black dark:bg-white dark:text-black  focus:ring-blue-900 justify-center items-center text-white px-5 rounded-lg cursor-pointer gap-2"
         >
           <GoPlus />
           Add
@@ -155,7 +155,10 @@ export default function CardContent() {
         ) : (
           <AnimatePresence>
             {todoItem?.map(
-              ({ id, task, choose, datetime, color, completed,isDeleted }, index) => (
+              (
+                { id, task, choose, datetime, color, completed, isDeleted },
+                index
+              ) => (
                 <motion.div
                   key={index}
                   initial={{ y: -15, scale: 0.95 }}
@@ -165,7 +168,7 @@ export default function CardContent() {
                     y: "-10px",
                   }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="relative shadow-lg mb-0 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
+                  className="relative shadow-lg mb-0 dark:bg-slate-200 flex items-center justify-between px-4 py-5 rounded-lg mt-5 mx-auto w-[60%]"
                 >
                   <div className="flex relative items-center justify-center gap-2">
                     <div
@@ -248,8 +251,8 @@ export default function CardContent() {
                                   scale: 0.975,
                                 }}
                                 className="border px-2 text-xs  border-black rounded-sm  p-2 "
-                                onClick={()=>{
-                                  showisDeleted(id)
+                                onClick={() => {
+                                  showisDeleted(id);
                                 }}
                               >
                                 Cancel
@@ -260,8 +263,8 @@ export default function CardContent() {
                                   scale: 0.975,
                                 }}
                                 className="flex items-center  gap-2 px-3 text-xs   rounded-sm bg-black text-white  py-2"
-                                onClick={()=>{
-                                  deleteItem(id)
+                                onClick={() => {
+                                  deleteItem(id);
                                 }}
                               >
                                 <div>
